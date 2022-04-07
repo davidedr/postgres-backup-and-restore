@@ -22,6 +22,10 @@ set BACKUP_FOLDER=C:\BACKUP\%SUBFILENAME%_DATA
 echo "BACKUP_FOLDER: %BACKUP_FOLDER%" >> %LOGFILE%
 md %BACKUP_FOLDER% >> %LOGFILE%
 
+REM
+REM Folder level backup
+REM
+
 REM dir "c:\Program Files\PostgreSQL\9.6\data\postmaster.pid"
 REM "C:\Program Files\PostgreSQL\9.6\bin\pg_ctl.exe" runservice -N "postgresql-x64-9.6" -D "C:\Program Files\PostgreSQL\9.6\data" -w
 
@@ -32,6 +36,14 @@ REM "c:\Program Files\PostgreSQL\9.6\bin\pg_ctl.exe" start -D "C:\Program Files\
 net start postgresql-x64-9.6 >> %LOGFILE%
 
 .\7-Zip\7z a -tzip %BACKUP_FOLDER%.zip %BACKUP_FOLDER% >> %LOGFILE%
+
+REM
+REM To restore:
+REM unzip folder
+REm assign all permissions to user
+REM execute "c:\Program Files\PostgreSQL\9.6\bin\pg_ctl.exe" -D c:/backup/20220402-171414_DATA start
+REM maybe you want to change the port in postgresql.conf
+REM 
 
 REM
 REM sql format database
