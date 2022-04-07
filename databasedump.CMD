@@ -14,16 +14,15 @@ set CUR_SS=%time:~6,2%
 set CUR_MS=%time:~9,2%
 
 set SUBFILENAME=%CUR_YYYY%%CUR_MM%%CUR_DD%-%CUR_HH%%CUR_NN%%CUR_SS%
-ECHO %SUBFILENAME%
-PAUSE
+REM ECHO %SUBFILENAME%
 
 set LOGFILE=%BACKUP_FOLDER_GENERAL%\%CUR_YYYY%%CUR_MM%%CUR_DD%-%CUR_HH%%CUR_NN%%CUR_SS%.databasedump.log
-echo "Database dump %SUBFILENAME%" >> %LOGFILE%
-echo "LOGFILE: %LOGFILE%" >> %LOGFILE%
+echo Database dump %SUBFILENAME% >> %LOGFILE%
+echo LOGFILE: %LOGFILE% >> %LOGFILE%
 
-echo "Data folder file-level backup..." >> %LOGFILE%
+echo Data folder file-level backup... >> %LOGFILE%
 set BACKUP_FOLDER=%BACKUP_FOLDER_GENERAL%\%SUBFILENAME%_DATA
-echo "BACKUP_FOLDER: %BACKUP_FOLDER%" >> %LOGFILE%
+echo BACKUP_FOLDER: %BACKUP_FOLDER% >> %LOGFILE%
 md %BACKUP_FOLDER% >> %LOGFILE%
 
 REM
@@ -55,18 +54,18 @@ REM
 REM sql format database
 REM 
 
-echo "SQL schema only backup..." >> %LOGFILE%
+echo SQL schema only backup... >> %LOGFILE%
 set PGPASSWORD=postgres
 "c:\Program Files\PostgreSQL\9.6\bin\pg_dump.exe" -Z 6 -U postgres --serializable-deferrable -C -f %BACKUP_FOLDER_GENERAL%\%SUBFILENAME%_counters_schema_only.sql -h localhost -p 5432 -s counters >> %LOGFILE%
 set PGPASSWORD=
 
-echo "SQL data only backup..." >> %LOGFILE%
+echo SQL data only backup... >> %LOGFILE%
 REM -b useless w/ -a option: -b is default behaviour except when --schema, --table, or --schema-only is specified
 set PGPASSWORD=postgres
 "c:\Program Files\PostgreSQL\9.6\bin\pg_dump.exe" -Z 6 -U postgres --serializable-deferrable -C -f %BACKUP_FOLDER_GENERAL%\%SUBFILENAME%_counters_data_only.sql -h localhost -p 5432 -a --column-inserts --inserts counters >> %LOGFILE%
 set PGPASSWORD=
 
-echo "SQL schema and data backup..." >> %LOGFILE%
+echo SQL schema and data backup... >> %LOGFILE%
 set PGPASSWORD=postgres
 "c:\Program Files\PostgreSQL\9.6\bin\pg_dump.exe" -Z 6 -U postgres --serializable-deferrable -C -f %BACKUP_FOLDER_GENERAL%\%SUBFILENAME%_counters_schema_data.sql -h localhost -p 5432 --column-inserts --inserts --disable-triggers counters >> %LOGFILE%
 set PGPASSWORD=
@@ -80,7 +79,7 @@ REM
 REM -F c format database
 REM 
 
-echo "-F c backup..." >> %LOGFILE%
+echo -F c backup... >> %LOGFILE%
 set PGPASSWORD=postgres
 "c:\Program Files\PostgreSQL\9.6\bin\pg_dump.exe" -F c -Z 6 -U postgres --serializable-deferrable -C -f %BACKUP_FOLDER_GENERAL%\%SUBFILENAME%_counters_schema_data.custom_format -h localhost -p 5432 --column-inserts --inserts --disable-triggers counters >> %LOGFILE%
 set PGPASSWORD=
@@ -103,4 +102,4 @@ set CUR_NN=%time:~3,2%
 set CUR_SS=%time:~6,2%
 set CUR_MS=%time:~9,2%
 set TERMINATION_TIMESTAMP=%CUR_YYYY%%CUR_MM%%CUR_DD%-%CUR_HH%%CUR_NN%%CUR_SS%
-echo "Database dump terminated %TERMINATION_TIMESTAMP%" >> %LOGFILE%
+echo Database dump terminated %TERMINATION_TIMESTAMP% >> %LOGFILE%
