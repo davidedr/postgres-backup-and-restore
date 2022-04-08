@@ -40,6 +40,8 @@ net start postgresql-x64-9.6 >> %LOGFILE%
 
 .\7-Zip\7z a -tzip %BACKUP_FOLDER%.zip %BACKUP_FOLDER% >> %LOGFILE%
 
+rmdir /S /Q %BACKUP_FOLDER% >> %LOGFILE%
+
 REM
 REM To restore:
 REM unzip folder
@@ -91,6 +93,18 @@ REM
 REM The database named in the -d switch can be any database existing in the cluster; pg_restore only uses it to issue the CREATE DATABASE command for mydb.
 REM With -C, data is always restored into the database name that appears in the dump file.
 REM Ignore the three lines of error that appears
+
+REM
+REM Only keep last n backup items
+REM
+
+dir /b *.databasedump.log
+for /f "delims=, skip=10" %f in ('dir /b *.databasedump.log') do dir %f
+for /f "delims=, skip=10" %f in ('dir /b *.databasedump.log') do del %f
+
+REM
+REM Report processing conclusion
+REM
 
 set CUR_YYYY=%date:~6,4%
 set CUR_MM=%date:~3,2%
