@@ -43,6 +43,13 @@ net start postgresql-x64-9.6 >> %LOGFILE%
 rmdir /S /Q %BACKUP_FOLDER% >> %LOGFILE%
 
 REM
+REM
+REM another method
+net stop postgresql-x64-9.6 >> %LOGFILE%
+.\7-Zip\7z a -tzip %BACKUP_FOLDER%.zip C:\"Program Files"\PostgreSQL\9.6\data >> %LOGFILE%
+net start postgresql-x64-9.6 >> %LOGFILE%
+
+REM
 REM To restore:
 REM unzip folder
 REm assign all permissions to user
