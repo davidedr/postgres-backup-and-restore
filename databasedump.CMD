@@ -40,7 +40,7 @@ net start postgresql-x64-9.6 >> %LOGFILE%
 
 .\7-Zip\7z a -tzip %BACKUP_FOLDER%.zip %BACKUP_FOLDER% >> %LOGFILE%
 
-rmdir /S /Q %BACKUP_FOLDER% >> %LOGFILE%
+rmdir /S /Q %BACKUP_FOLDER%_DIRETTO >> %LOGFILE%
 
 REM
 REM
@@ -102,12 +102,39 @@ REM With -C, data is always restored into the database name that appears in the 
 REM Ignore the three lines of error that appears
 
 REM
-REM Only keep last n backup items
+REM Clean up older items
 REM
+set TOKEEP=5
+set TARGET_DIR=C:\BACKUP
+set TARGET=%TARGET_DIR%\*.databasedump.log >> %LOGFILE%
+echo %TARGET% >> %LOGFILE%
+dir /b /O-D %TARGET% >> %LOGFILE%
+for /f "delims=, skip=%TOKEEP%" %%f in ('dir /b /O-D %TARGET%') do dir %TARGET_DIR%\%%f >> %LOGFILE%
+for /f "delims=, skip=%TOKEEP%" %%f in ('dir /b /O-D C:\BACKUP\*.databasedump.log') do del %TARGET_DIR%\%%f >> %LOGFILE%
 
-dir /b *.databasedump.log
-for /f "delims=, skip=10" %%f in ('dir /b *.databasedump.log') do dir %%f
-for /f "delims=, skip=10" %%f in ('dir /b *.databasedump.log') do del %%f
+set TARGET=%TARGET_DIR%\*_counters_schema_only.sql >> %LOGFILE%
+echo %TARGET% >> %LOGFILE%
+dir /b /O-D %TARGET% >> %LOGFILE%
+for /f "delims=, skip=%TOKEEP%" %%f in ('dir /b /O-D %TARGET%') do dir %TARGET_DIR%\%%f >> %LOGFILE%
+for /f "delims=, skip=%TOKEEP%" %%f in ('dir /b /O-D C:\BACKUP\*.databasedump.log') do del %TARGET_DIR%\%%f >> %LOGFILE%
+
+set TARGET=%TARGET_DIR%\*_counters_data_only.sql >> %LOGFILE%
+echo %TARGET% >> %LOGFILE%
+dir /b /O-D %TARGET% >> %LOGFILE%
+for /f "delims=, skip=%TOKEEP%" %%f in ('dir /b /O-D %TARGET%') do dir %TARGET_DIR%\%%f >> %LOGFILE%
+for /f "delims=, skip=%TOKEEP%" %%f in ('dir /b /O-D C:\BACKUP\*.databasedump.log') do del %TARGET_DIR%\%%f >> %LOGFILE%
+
+set TARGET=%TARGET_DIR%\*_counters_schema_data.sql >> %LOGFILE%
+echo %TARGET% >> %LOGFILE%
+dir /b /O-D %TARGET% >> %LOGFILE%
+for /f "delims=, skip=%TOKEEP%" %%f in ('dir /b /O-D %TARGET%') do dir %TARGET_DIR%\%%f >> %LOGFILE%
+for /f "delims=, skip=%TOKEEP%" %%f in ('dir /b /O-D C:\BACKUP\*.databasedump.log') do del %TARGET_DIR%\%%f >> %LOGFILE%
+
+set TARGET=%TARGET_DIR%\*_counters_schema_data.custom_format >> %LOGFILE%
+echo %TARGET% >> %LOGFILE%
+dir /b /O-D %TARGET% >> %LOGFILE%
+for /f "delims=, skip=%TOKEEP%" %%f in ('dir /b /O-D %TARGET%') do dir %TARGET_DIR%\%%f >> %LOGFILE%
+for /f "delims=, skip=%TOKEEP%" %%f in ('dir /b /O-D C:\BACKUP\*.databasedump.log') do del %TARGET_DIR%\%%f >> %LOGFILE%
 
 REM
 REM Report processing conclusion
