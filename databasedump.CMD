@@ -20,6 +20,9 @@ set LOGFILE=%BACKUP_FOLDER_GENERAL%\%CUR_YYYY%%CUR_MM%%CUR_DD%-%CUR_HH%%CUR_NN%%
 echo Database dump %SUBFILENAME% >> %LOGFILE%
 echo LOGFILE: %LOGFILE% >> %LOGFILE%
 
+
+dir %BACKUP_FOLDER_GENERAL% >> %LOGFILE%
+
 echo Data folder file-level backup... >> %LOGFILE%
 set BACKUP_FOLDER=%BACKUP_FOLDER_GENERAL%\%SUBFILENAME%_DATA
 echo BACKUP_FOLDER: %BACKUP_FOLDER% >> %LOGFILE%
@@ -46,7 +49,7 @@ REM
 REM
 REM another method
 net stop postgresql-x64-9.6 >> %LOGFILE%
-.\7-Zip\7z a -tzip %BACKUP_FOLDER%.zip C:\"Program Files"\PostgreSQL\9.6\data >> %LOGFILE%
+.\7-Zip\7z a -tzip %BACKUP_FOLDER%_1.zip C:\"Program Files"\PostgreSQL\9.6\data >> %LOGFILE%
 net start postgresql-x64-9.6 >> %LOGFILE%
 
 REM
@@ -106,6 +109,20 @@ REM Clean up older items
 REM
 set TOKEEP=5
 set TARGET_DIR=C:\BACKUP
+
+set TARGET=%TARGET_DIR%\*_DATA.zip >> %LOGFILE%
+echo %TARGET% >> %LOGFILE%
+dir /b /O-D %TARGET% >> %LOGFILE%
+for /f "delims=, skip=%TOKEEP%" %%f in ('dir /b /O-D %TARGET%') do dir %TARGET_DIR%\%%f >> %LOGFILE%
+for /f "delims=, skip=%TOKEEP%" %%f in ('dir /b /O-D C:\BACKUP\*.databasedump.log') do del %TARGET_DIR%\%%f >> %LOGFILE%
+
+set TARGET=%TARGET_DIR% >> %LOGFILE%
+echo %TARGET_DIR% >> %LOGFILE%
+dir %TARGET_DIR% /AD  >> %LOGFILE%
+dir /b /O-D %TARGET% >> %LOGFILE%
+for /f "delims=, skip=%TOKEEP%" %%f in ('dir /AD %TARGET%') do echo %TARGET_DIR%\%%f >> %LOGFILE%
+for /f "delims=, skip=%TOKEEP%" %%f in ('dir /AD %TARGET%') do rd /S /Q %TARGET_DIR%\%%f >> %LOGFILE%
+
 set TARGET=%TARGET_DIR%\*.databasedump.log >> %LOGFILE%
 echo %TARGET% >> %LOGFILE%
 dir /b /O-D %TARGET% >> %LOGFILE%
@@ -135,6 +152,12 @@ echo %TARGET% >> %LOGFILE%
 dir /b /O-D %TARGET% >> %LOGFILE%
 for /f "delims=, skip=%TOKEEP%" %%f in ('dir /b /O-D %TARGET%') do dir %TARGET_DIR%\%%f >> %LOGFILE%
 for /f "delims=, skip=%TOKEEP%" %%f in ('dir /b /O-D C:\BACKUP\*.databasedump.log') do del %TARGET_DIR%\%%f >> %LOGFILE%
+
+REM
+REM
+REM
+
+dir %BACKUP_FOLDER_GENERAL% >> %LOGFILE%
 
 REM
 REM Report processing conclusion
