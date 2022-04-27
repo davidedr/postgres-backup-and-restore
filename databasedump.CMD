@@ -122,42 +122,56 @@ echo Clean up %TARGET% >> %LOGFILE%
 dir /b /O-D %TARGET% >> %LOGFILE%
 for /f "delims=, skip=%TOKEEP%" %%f in ('dir /b /O-D %TARGET%') do dir %TARGET_DIR%\%%f >> %LOGFILE%
 for /f "delims=, skip=%TOKEEP%" %%f in ('dir /b /O-D %TARGET%') do del %TARGET_DIR%\%%f >> %LOGFILE%
+echo Post cleanup %TARGET% >> %LOGFILE%
+dir /b /O-D %TARGET% >> %LOGFILE%
 
 set TARGET=%TARGET_DIR% >> %LOGFILE%
 echo Clean up %TARGET_DIR% >> %LOGFILE%
 dir %TARGET_DIR% /AD /B >> %LOGFILE%
 for /f "delims=, skip=%TOKEEP%" %%f in ('dir /AD /B %TARGET%') do echo %TARGET_DIR%\%%f >> %LOGFILE%
 for /f "delims=, skip=%TOKEEP%" %%f in ('dir /AD /B %TARGET%') do rd /S /Q %TARGET_DIR%\%%f >> %LOGFILE%
+echo Post clean up %TARGET_DIR% >> %LOGFILE%
+dir %TARGET_DIR% /AD /B >> %LOGFILE%
 
 set TARGET=%TARGET_DIR%\*.databasedump.log >> %LOGFILE%
 echo Clean up %TARGET% >> %LOGFILE%
 dir /b /O-D %TARGET% >> %LOGFILE%
 for /f "delims=, skip=%TOKEEP%" %%f in ('dir /b /O-D %TARGET%') do dir %TARGET_DIR%\%%f >> %LOGFILE%
 for /f "delims=, skip=%TOKEEP%" %%f in ('dir /b /O-D %TARGET%') do del %TARGET_DIR%\%%f >> %LOGFILE%
+echo Post clean up %TARGET% >> %LOGFILE%
+dir /b /O-D %TARGET% >> %LOGFILE%
 
 set TARGET=%TARGET_DIR%\*_counters_schema_only.sql >> %LOGFILE%
 echo Clean up %TARGET% >> %LOGFILE%
 dir /b /O-D %TARGET% >> %LOGFILE%
 for /f "delims=, skip=%TOKEEP%" %%f in ('dir /b /O-D %TARGET%') do dir %TARGET_DIR%\%%f >> %LOGFILE%
 for /f "delims=, skip=%TOKEEP%" %%f in ('dir /b /O-D %TARGET%') do del %TARGET_DIR%\%%f >> %LOGFILE%
+echo Post clean up %TARGET% >> %LOGFILE%
+dir /b /O-D %TARGET% >> %LOGFILE%
 
 set TARGET=%TARGET_DIR%\*_counters_data_only.sql >> %LOGFILE%
 echo Clean up %TARGET% >> %LOGFILE%
 dir /b /O-D %TARGET% >> %LOGFILE%
 for /f "delims=, skip=%TOKEEP%" %%f in ('dir /b /O-D %TARGET%') do dir %TARGET_DIR%\%%f >> %LOGFILE%
 for /f "delims=, skip=%TOKEEP%" %%f in ('dir /b /O-D %TARGET%') do del %TARGET_DIR%\%%f >> %LOGFILE%
+echo Post clean up %TARGET% >> %LOGFILE%
+dir /b /O-D %TARGET% >> %LOGFILE%
 
 set TARGET=%TARGET_DIR%\*_counters_schema_data.sql >> %LOGFILE%
 echo Clean up %TARGET% >> %LOGFILE%
 dir /b /O-D %TARGET% >> %LOGFILE%
 for /f "delims=, skip=%TOKEEP%" %%f in ('dir /b /O-D %TARGET%') do dir %TARGET_DIR%\%%f >> %LOGFILE%
 for /f "delims=, skip=%TOKEEP%" %%f in ('dir /b /O-D %TARGET%') do del %TARGET_DIR%\%%f >> %LOGFILE%
+echo Post clean up %TARGET% >> %LOGFILE%
+dir /b /O-D %TARGET% >> %LOGFILE%
 
 set TARGET=%TARGET_DIR%\*_counters_schema_data.custom_format >> %LOGFILE%
 echo Clean up %TARGET% >> %LOGFILE%
 dir /b /O-D %TARGET% >> %LOGFILE%
 for /f "delims=, skip=%TOKEEP%" %%f in ('dir /b /O-D %TARGET%') do dir %TARGET_DIR%\%%f >> %LOGFILE%
 for /f "delims=, skip=%TOKEEP%" %%f in ('dir /b /O-D %TARGET%') do del %TARGET_DIR%\%%f >> %LOGFILE%
+echo Post clean up %TARGET% >> %LOGFILE%
+dir /b /O-D %TARGET% >> %LOGFILE%
 
 REM
 REM Contents after processing
